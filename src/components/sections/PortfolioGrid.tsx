@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Card } from '../ui/card';
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
@@ -11,45 +11,47 @@ interface PortfolioGridProps {
   type: 'projects' | 'labs';
 }
 
+const getIcon = (type: 'projects' | 'labs') => {
+  switch (type) {
+    case 'labs':
+      return <Play className="w-4 h-4" />;
+    case 'projects':
+      return <Eye className="w-4 h-4" />;
+    default:
+      return <ExternalLink className="w-4 h-4" />;
+  }
+};
+
+const getTypeLabel = (type: 'projects' | 'labs') => {
+  switch (type) {
+    case 'projects':
+      return 'PROJECTS.LOG';
+    case 'labs':
+      return 'LABS.SEC';
+    default:
+      return 'PORTFOLIO';
+  }
+};
+
 export function PortfolioGrid({ items, type }: PortfolioGridProps) {
   const [selectedItem, setSelectedItem] = useState<PortfolioItem | null>(null);
   const [showAllModal, setShowAllModal] = useState(false);
   const [filter, setFilter] = useState('All');
 
-  // For the main grid: 5 real items + the "View More" link
-  const realItems = items.filter(i => !i.isMoreLink);
-  const moreLinkItem = items.find(i => i.isMoreLink);
-  const displayItems = realItems.slice(0, 5);
-  if (moreLinkItem) displayItems.push(moreLinkItem);
+  const { realItems, moreLinkItem, displayItems, allTags } = useMemo(() => {
+    const real = items.filter(i => !i.isMoreLink);
+    const more = items.find(i => i.isMoreLink);
+    const display = real.slice(0, 5);
+    if (more) display.push(more);
+    const tags = ['All', ...Array.from(new Set(real.flatMap(i => i.tags)))];
+    return { realItems: real, moreLinkItem: more, displayItems: display, allTags: tags };
+  }, [items]);
 
-  // Derive unique tags for the modal filters
-  const allTags = ['All', ...Array.from(new Set(realItems.flatMap(i => i.tags)))];
-
-  const filteredModalItems = realItems.filter(item => 
-    filter === 'All' || item.tags.includes(filter)
-  );
-
-  const getIcon = () => {
-    switch (type) {
-      case 'labs':
-        return <Play className="w-4 h-4" />;
-      case 'projects':
-        return <Eye className="w-4 h-4" />;
-      default:
-        return <ExternalLink className="w-4 h-4" />;
-    }
-  };
-
-  const getTypeLabel = () => {
-    switch (type) {
-      case 'projects':
-        return 'PROJECTS.LOG';
-      case 'labs':
-        return 'LABS.SEC';
-      default:
-        return 'PORTFOLIO';
-    }
-  };
+  const filteredModalItems = useMemo(() => {
+    return realItems.filter(item => 
+      filter === 'All' || item.tags.includes(filter)
+    );
+  }, [realItems, filter]);
 
   return (
     <section className="py-20 px-4">
@@ -57,7 +59,7 @@ export function PortfolioGrid({ items, type }: PortfolioGridProps) {
         {/* Section Header */}
         <div className="text-center mb-12">
           <div className="inline-block cyber-border bg-black-light/50 rounded px-6 py-3 mb-4">
-            <h2 className="font-mono text-primary">{getTypeLabel()}</h2>
+            <h2 className="font-mono text-primary">{getTypeLabel(type)}</h2>
           </div>
           <p className="font-mono text-muted-foreground max-w-2xl mx-auto">
             {type === 'projects' && 'A collection of cybersecurity, artificial intelligence, software development, and academic projects demonstrating practical problem-solving and continuous learning.'}
@@ -111,7 +113,7 @@ export function PortfolioGrid({ items, type }: PortfolioGridProps) {
                       className="bg-primary text-primary-foreground hover:bg-primary/90 w-36"
                       onClick={() => setSelectedItem(item)}
                     >
-                      {getIcon()}
+                      {getIcon(type)}
                       <span className="ml-2">View Details</span>
                     </Button>
                     
@@ -242,7 +244,7 @@ export function PortfolioGrid({ items, type }: PortfolioGridProps) {
                             className="bg-primary text-primary-foreground hover:bg-primary/90 w-36"
                             onClick={() => setSelectedItem(item)}
                           >
-                            {getIcon()}
+                            {getIcon(type)}
                             <span className="ml-2">View Details</span>
                           </Button>
                           

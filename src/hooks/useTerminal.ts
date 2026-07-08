@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 
 export function useTerminal() {
   const [startupLogs, setStartupLogs] = useState<string[]>([]);
@@ -18,13 +18,13 @@ export function useTerminal() {
     }
   }, [history, startupLogs, inputVal]);
 
-  const handleTerminalClick = () => {
+  const handleTerminalClick = useCallback(() => {
     if (terminalInputRef.current) {
       terminalInputRef.current.focus();
     }
-  };
+  }, []);
 
-  const handleCommandSubmit = (e: React.FormEvent) => {
+  const handleCommandSubmit = useCallback((e: React.FormEvent) => {
     e.preventDefault();
     const cleanInput = inputVal.trim();
     if (!cleanInput) return;
@@ -39,9 +39,9 @@ export function useTerminal() {
     setCmdHistory(prev => [cleanInput, ...prev]);
     setInputVal("");
     setPointer(-1);
-  };
+  }, [inputVal]);
 
-  const handleTerminalKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleTerminalKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "ArrowUp") {
       e.preventDefault();
       if (pointer + 1 < cmdHistory.length) {
@@ -60,7 +60,7 @@ export function useTerminal() {
         setInputVal("");
       }
     }
-  };
+  }, [pointer, cmdHistory]);
 
   return {
     startupLogs,

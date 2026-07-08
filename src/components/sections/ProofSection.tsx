@@ -6,132 +6,128 @@ import { Button } from '../ui/button';
 
 import { certs, allCerts, platformBadges, allBadges, CertItem, BadgeItem } from '../../constants/portfolio';
 
+const certCategories = ['All', 'Cybersecurity', 'AI', 'Networking', 'Programming', 'Incident Response'];
+const badgeCategories = ['All', 'TryHackMe', 'BTLO', 'Internal'];
+
+const CertCard = ({ cert }: { cert: CertItem }) => (
+  <Card
+    className="cyber-border bg-black-light/30 border-primary/20 hover:border-primary/50 transition-all duration-300 p-5 flex flex-col relative group overflow-hidden"
+  >
+    {/* Existing Card Content */}
+    <div className="flex items-center justify-between mb-3 z-0 relative">
+      <span
+        className={`font-mono text-[10px] px-2 py-0.5 rounded border ${
+          cert.status === 'COMPLETED'
+            ? 'border-primary/50 text-primary'
+            : 'border-yellow-400/50 text-yellow-400'
+        }`}
+      >
+        {cert.status}
+      </span>
+      {cert.credentialUrl && (
+        <span className="text-primary/50 group-hover:text-primary transition-colors">
+          <ExternalLink className="w-3.5 h-3.5" />
+        </span>
+      )}
+    </div>
+
+    <div className="flex items-start gap-2 flex-1 z-0 relative">
+      <BadgeCheck className={`w-4 h-4 mt-0.5 shrink-0 ${cert.status === 'COMPLETED' ? 'text-primary' : 'text-yellow-400'}`} />
+      <div>
+        <p className="font-mono text-primary text-sm font-semibold leading-snug mb-1">{cert.title}</p>
+        <p className="font-mono text-muted-foreground text-xs">{cert.issuer} · {cert.date}</p>
+      </div>
+    </div>
+
+    <div className="flex flex-wrap gap-1 mt-3 z-0 relative">
+      {cert.tags.map((tag) => (
+        <Badge
+          key={tag}
+          variant="outline"
+          className="text-[10px] font-mono border-primary/20 text-muted-foreground"
+        >
+          {tag}
+        </Badge>
+      ))}
+    </div>
+
+    {/* Hover Overlay */}
+    {cert.credentialUrl && (
+      <div className="absolute inset-0 bg-black/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center p-4 z-10 backdrop-blur-sm">
+        <div className="h-24 w-full flex items-center justify-center mb-4">
+          {cert.image && (
+            <img src={cert.image} alt={cert.title} className="max-h-full max-w-full object-contain rounded bg-white/5 p-1" />
+          )}
+        </div>
+        <Button variant="outline" size="sm" className="border-primary/50 text-primary hover:bg-primary/20" asChild>
+          <a href={cert.credentialUrl} target="_blank" rel="noopener noreferrer">
+            <ExternalLink className="w-4 h-4 mr-2" />
+            Verify Credential
+          </a>
+        </Button>
+      </div>
+    )}
+  </Card>
+);
+
+const BadgeCard = ({ badge }: { badge: BadgeItem }) => (
+  <Card
+    className="cyber-border bg-black-light/30 border-primary/20 hover:border-primary/50 transition-all duration-300 p-5 relative group overflow-hidden flex flex-col"
+  >
+    <div className="flex items-start gap-3 z-0 relative flex-1">
+      {/* Emoji icon */}
+      <div className="text-2xl w-10 h-10 flex items-center justify-center bg-primary/10 border border-primary/20 rounded shrink-0">
+        {badge.icon}
+      </div>
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center justify-between gap-2 mb-1">
+          <span className="font-mono text-[10px] text-muted-foreground">{badge.platform}</span>
+          <span
+            className={`font-mono text-[10px] px-1.5 py-0.5 rounded border ${
+              badge.status === 'EARNED'
+                ? 'border-primary/50 text-primary'
+                : 'border-yellow-400/50 text-yellow-400'
+            }`}
+          >
+            {badge.status}
+          </span>
+        </div>
+        <p className="font-mono text-primary text-xs font-semibold mb-1 leading-snug">{badge.name}</p>
+        <p className="font-mono text-muted-foreground text-[11px] leading-relaxed">{badge.description}</p>
+      </div>
+    </div>
+    {/* Progress bar for in-progress badges */}
+    {badge.status === 'IN PROGRESS' && (
+      <div className="mt-3 h-1 rounded-full bg-primary/10 overflow-hidden z-0 relative">
+        <div className="h-full w-[55%] bg-yellow-400/70 rounded-full" />
+      </div>
+    )}
+
+    {/* Hover Overlay */}
+    {badge.credentialUrl && (
+      <div className="absolute inset-0 bg-black/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center p-4 z-10 backdrop-blur-sm">
+        <div className="h-20 w-full flex items-center justify-center mb-4">
+          {badge.image && (
+            <img src={badge.image} alt={badge.name} className="max-h-full max-w-full object-contain rounded bg-white/5 p-1" />
+          )}
+        </div>
+        <Button variant="outline" size="sm" className="border-primary/50 text-primary hover:bg-primary/20" asChild>
+          <a href={badge.credentialUrl} target="_blank" rel="noopener noreferrer">
+            <ExternalLink className="w-4 h-4 mr-2" />
+            View Badge
+          </a>
+        </Button>
+      </div>
+    )}
+  </Card>
+);
+
 export function ProofSection() {
   const [showAllCerts, setShowAllCerts] = useState(false);
   const [showAllBadges, setShowAllBadges] = useState(false);
   const [certFilter, setCertFilter] = useState('All');
   const [badgeFilter, setBadgeFilter] = useState('All');
 
-  // Derived unique categories
-  const certCategories = ['All', 'Cybersecurity', 'AI', 'Networking', 'Programming', 'Incident Response'];
-  const badgeCategories = ['All', 'TryHackMe', 'BTLO', 'Internal'];
-
-  // Helper to render a single cert card
-  const renderCertCard = (cert: CertItem, idx: number) => (
-    <Card
-      key={idx}
-      className="cyber-border bg-black-light/30 border-primary/20 hover:border-primary/50 transition-all duration-300 p-5 flex flex-col relative group overflow-hidden"
-    >
-      {/* Existing Card Content */}
-      <div className="flex items-center justify-between mb-3 z-0 relative">
-        <span
-          className={`font-mono text-[10px] px-2 py-0.5 rounded border ${
-            cert.status === 'COMPLETED'
-              ? 'border-primary/50 text-primary'
-              : 'border-yellow-400/50 text-yellow-400'
-          }`}
-        >
-          {cert.status}
-        </span>
-        {cert.credentialUrl && (
-          <span className="text-primary/50 group-hover:text-primary transition-colors">
-            <ExternalLink className="w-3.5 h-3.5" />
-          </span>
-        )}
-      </div>
-
-      <div className="flex items-start gap-2 flex-1 z-0 relative">
-        <BadgeCheck className={`w-4 h-4 mt-0.5 shrink-0 ${cert.status === 'COMPLETED' ? 'text-primary' : 'text-yellow-400'}`} />
-        <div>
-          <p className="font-mono text-primary text-sm font-semibold leading-snug mb-1">{cert.title}</p>
-          <p className="font-mono text-muted-foreground text-xs">{cert.issuer} · {cert.date}</p>
-        </div>
-      </div>
-
-      <div className="flex flex-wrap gap-1 mt-3 z-0 relative">
-        {cert.tags.map((tag) => (
-          <Badge
-            key={tag}
-            variant="outline"
-            className="text-[10px] font-mono border-primary/20 text-muted-foreground"
-          >
-            {tag}
-          </Badge>
-        ))}
-      </div>
-
-      {/* Hover Overlay */}
-      {cert.credentialUrl && (
-        <div className="absolute inset-0 bg-black/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center p-4 z-10 backdrop-blur-sm">
-          <div className="h-24 w-full flex items-center justify-center mb-4">
-            {cert.image && (
-              <img src={cert.image} alt={cert.title} className="max-h-full max-w-full object-contain rounded bg-white/5 p-1" />
-            )}
-          </div>
-          <Button variant="outline" size="sm" className="border-primary/50 text-primary hover:bg-primary/20" asChild>
-            <a href={cert.credentialUrl} target="_blank" rel="noopener noreferrer">
-              <ExternalLink className="w-4 h-4 mr-2" />
-              Verify Credential
-            </a>
-          </Button>
-        </div>
-      )}
-    </Card>
-  );
-
-  // Helper to render a single badge card
-  const renderBadgeCard = (badge: BadgeItem, idx: number) => (
-    <Card
-      key={idx}
-      className="cyber-border bg-black-light/30 border-primary/20 hover:border-primary/50 transition-all duration-300 p-5 relative group overflow-hidden flex flex-col"
-    >
-      <div className="flex items-start gap-3 z-0 relative flex-1">
-        {/* Emoji icon */}
-        <div className="text-2xl w-10 h-10 flex items-center justify-center bg-primary/10 border border-primary/20 rounded shrink-0">
-          {badge.icon}
-        </div>
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center justify-between gap-2 mb-1">
-            <span className="font-mono text-[10px] text-muted-foreground">{badge.platform}</span>
-            <span
-              className={`font-mono text-[10px] px-1.5 py-0.5 rounded border ${
-                badge.status === 'EARNED'
-                  ? 'border-primary/50 text-primary'
-                  : 'border-yellow-400/50 text-yellow-400'
-              }`}
-            >
-              {badge.status}
-            </span>
-          </div>
-          <p className="font-mono text-primary text-xs font-semibold mb-1 leading-snug">{badge.name}</p>
-          <p className="font-mono text-muted-foreground text-[11px] leading-relaxed">{badge.description}</p>
-        </div>
-      </div>
-      {/* Progress bar for in-progress badges */}
-      {badge.status === 'IN PROGRESS' && (
-        <div className="mt-3 h-1 rounded-full bg-primary/10 overflow-hidden z-0 relative">
-          <div className="h-full w-[55%] bg-yellow-400/70 rounded-full" />
-        </div>
-      )}
-
-      {/* Hover Overlay */}
-      {badge.credentialUrl && (
-        <div className="absolute inset-0 bg-black/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center p-4 z-10 backdrop-blur-sm">
-          <div className="h-20 w-full flex items-center justify-center mb-4">
-            {badge.image && (
-              <img src={badge.image} alt={badge.name} className="max-h-full max-w-full object-contain rounded bg-white/5 p-1" />
-            )}
-          </div>
-          <Button variant="outline" size="sm" className="border-primary/50 text-primary hover:bg-primary/20" asChild>
-            <a href={badge.credentialUrl} target="_blank" rel="noopener noreferrer">
-              <ExternalLink className="w-4 h-4 mr-2" />
-              View Badge
-            </a>
-          </Button>
-        </div>
-      )}
-    </Card>
-  );
   return (
     <section className="py-20 px-4">
       <div className="container mx-auto max-w-6xl">
@@ -193,7 +189,7 @@ export function ProofSection() {
                   </button>
                 );
               }
-              return renderCertCard(cert, idx);
+              return <CertCard key={idx} cert={cert} />;
             })}
           </div>
         </div>
@@ -245,7 +241,7 @@ export function ProofSection() {
                   </button>
                 );
               }
-              return renderBadgeCard(badge, idx);
+              return <BadgeCard key={idx} badge={badge} />;
             })}
           </div>
         </div>
@@ -294,7 +290,7 @@ export function ProofSection() {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {allCerts
                     .filter(cert => certFilter === 'All' || cert.tags.some(t => t.toLowerCase().includes(certFilter.toLowerCase())))
-                    .map((cert, idx) => renderCertCard(cert, idx))}
+                    .map((cert, idx) => <CertCard key={idx} cert={cert} />)}
                 </div>
               </div>
             </div>
@@ -335,7 +331,7 @@ export function ProofSection() {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {allBadges
                     .filter(badge => badgeFilter === 'All' || badge.platform === badgeFilter)
-                    .map((badge, idx) => renderBadgeCard(badge, idx))}
+                    .map((badge, idx) => <BadgeCard key={idx} badge={badge} />)}
                 </div>
               </div>
             </div>

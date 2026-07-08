@@ -32,6 +32,15 @@ const themes = [
   },
 ];
 
+const sections = [
+  { id: 'home', label: 'home.exe' },
+  { id: 'about', label: 'about.sys' },
+  { id: 'proof', label: 'proof.dat' },
+  { id: 'projects', label: 'projects.log' },
+  { id: 'blogs', label: 'blogs.md' },
+  { id: 'contact', label: 'contact.sh' }
+];
+
 export function Header({ activeSection, onSectionChange }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { theme, setTheme } = useTheme();
@@ -53,15 +62,6 @@ export function Header({ activeSection, onSectionChange }: HeaderProps) {
     localStorage.setItem('theme-tour-seen', 'true');
     window.dispatchEvent(new Event('start-terminal-tour'));
   };
-
-  const sections = [
-    { id: 'home', label: 'home.exe' },
-    { id: 'about', label: 'about.sys' },
-    { id: 'proof', label: 'proof.dat' },
-    { id: 'projects', label: 'projects.log' },
-    { id: 'blogs', label: 'blogs.md' },
-    { id: 'contact', label: 'contact.sh' }
-  ];
 
   return (
     <>

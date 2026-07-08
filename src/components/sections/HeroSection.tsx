@@ -12,8 +12,10 @@ export function HeroSection({ onSectionChange }: HeroSectionProps) {
   const [showTour, setShowTour] = useState(false);
 
   useEffect(() => {
+    let timer: ReturnType<typeof setTimeout>;
+
     const handleStartTour = () => {
-      setTimeout(() => setShowTour(true), 600);
+      timer = setTimeout(() => setShowTour(true), 600);
     };
 
     window.addEventListener('start-terminal-tour', handleStartTour);
@@ -24,7 +26,10 @@ export function HeroSection({ onSectionChange }: HeroSectionProps) {
       handleStartTour();
     }
 
-    return () => window.removeEventListener('start-terminal-tour', handleStartTour);
+    return () => {
+      window.removeEventListener('start-terminal-tour', handleStartTour);
+      if (timer) clearTimeout(timer);
+    };
   }, []);
 
   const dismissTour = () => {
@@ -127,7 +132,6 @@ export function HeroSection({ onSectionChange }: HeroSectionProps) {
             <ChevronDown className="w-5 h-5" />
           </div>
         </div>
-      </div>
     </section>
   );
 }

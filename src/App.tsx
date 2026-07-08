@@ -1,3 +1,4 @@
+import { useMemo, useCallback } from 'react';
 import { Header } from './components/sections/Header';
 import { HeroSection } from './components/sections/HeroSection';
 import { PortfolioGrid } from './components/sections/PortfolioGrid';
@@ -14,19 +15,23 @@ export default function App() {
   const activeSection = useActiveSection(sectionIds);
 
   // Smooth-scroll to section when nav link clicked
-  const handleSectionChange = (id: string) => {
+  const handleSectionChange = useCallback((id: string) => {
     const el = document.getElementById(id);
     if (el) {
       el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-  };
+  }, []);
+
+  const matrixBackground = useMemo(() => {
+    return Array.from({ length: 15000 }, () => (Math.random() > 0.5 ? '1' : '0')).join(' ');
+  }, []);
 
   return (
     <div className="min-h-screen bg-background text-foreground relative overflow-x-hidden">
       {/* Matrix-style background effect */}
       <div className="fixed inset-0 pointer-events-none opacity-5 overflow-hidden select-none z-0">
         <div className="text-primary font-mono text-xs leading-relaxed break-all h-full w-full">
-          {Array.from({ length: 15000 }, () => (Math.random() > 0.5 ? '1' : '0')).join(' ')}
+          {matrixBackground}
         </div>
       </div>
 

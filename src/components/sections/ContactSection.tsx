@@ -6,6 +6,33 @@ import { Card } from '../ui/card';
 import { Mail, Github, Linkedin, Terminal, Send, MapPin, Download } from 'lucide-react';
 import { submitContactForm } from '../../api/contact';
 
+const contactLinks = [
+  {
+    icon: <Mail className="w-5 h-5" />,
+    label: 'email.sh',
+    value: import.meta.env.VITE_CONTACT_EMAIL || 'YOUR_EMAIL',
+    href: `mailto:${import.meta.env.VITE_CONTACT_EMAIL || 'YOUR_EMAIL'}`
+  },
+  {
+    icon: <Github className="w-5 h-5" />,
+    label: 'github.com',
+    value: import.meta.env.VITE_GITHUB_USERNAME || 'YOUR_GITHUB',
+    href: `https://github.com/${import.meta.env.VITE_GITHUB_USERNAME || 'YOUR_GITHUB'}`
+  },
+  {
+    icon: <Linkedin className="w-5 h-5" />,
+    label: 'linkedin.com',
+    value: import.meta.env.VITE_LINKEDIN_USERNAME || 'YOUR_LINKEDIN',
+    href: `https://linkedin.com/in/${import.meta.env.VITE_LINKEDIN_USERNAME || 'YOUR_LINKEDIN'}`
+  },
+  {
+    icon: <MapPin className="w-5 h-5" />,
+    label: 'location.geo',
+    value: 'Sri Lanka',
+    href: '#'
+  }
+];
+
 export function ContactSection() {
   const [formData, setFormData] = useState({
     name: '',
@@ -23,10 +50,11 @@ export function ContactSection() {
     setFormData(prev => ({ ...prev, [field]: value }));
 
     // Add terminal-style feedback
-    const newOutput = [...terminalOutput];
-    newOutput.push(`> ${field}_updated: "${value.substring(0, 20)}${value.length > 20 ? '...' : ''}"`);
-    if (newOutput.length > 10) newOutput.shift(); // Keep only last 10 lines
-    setTerminalOutput(newOutput);
+    setTerminalOutput(prev => {
+      const newOutput = [...prev, `> ${field}_updated: "${value.substring(0, 20)}${value.length > 20 ? '...' : ''}"`];
+      if (newOutput.length > 10) newOutput.shift(); // Keep only last 10 lines
+      return newOutput;
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -45,7 +73,6 @@ export function ContactSection() {
         email: formData.email,
         message: formData.message,
       });
-
 
       
       if (result.success) {
@@ -73,33 +100,6 @@ export function ContactSection() {
 
     setIsSubmitting(false);
   };
-
-  const contactLinks = [
-    {
-      icon: <Mail className="w-5 h-5" />,
-      label: 'email.sh',
-      value: import.meta.env.VITE_CONTACT_EMAIL || 'YOUR_EMAIL',
-      href: `mailto:${import.meta.env.VITE_CONTACT_EMAIL || 'YOUR_EMAIL'}`
-    },
-    {
-      icon: <Github className="w-5 h-5" />,
-      label: 'github.com',
-      value: import.meta.env.VITE_GITHUB_USERNAME || 'YOUR_GITHUB',
-      href: `https://github.com/${import.meta.env.VITE_GITHUB_USERNAME || 'YOUR_GITHUB'}`
-    },
-    {
-      icon: <Linkedin className="w-5 h-5" />,
-      label: 'linkedin.com',
-      value: import.meta.env.VITE_LINKEDIN_USERNAME || 'YOUR_LINKEDIN',
-      href: `https://linkedin.com/in/${import.meta.env.VITE_LINKEDIN_USERNAME || 'YOUR_LINKEDIN'}`
-    },
-    {
-      icon: <MapPin className="w-5 h-5" />,
-      label: 'location.geo',
-      value: 'Sri Lanka',
-      href: '#'
-    }
-  ];
 
   return (
     <section className="py-20 px-4">
