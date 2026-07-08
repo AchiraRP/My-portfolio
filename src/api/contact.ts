@@ -12,7 +12,7 @@ export async function submitContactForm(data: ContactFormData) {
       Accept: "application/json",
     },
     body: JSON.stringify({
-      access_key: import.meta.env.VITE_WEB3FORMS_ACCESS_KEY || "8829e2ae-87f9-4536-955f-5c8f0bd5daca",
+      access_key: import.meta.env.VITE_WEB3FORMS_ACCESS_KEY,
       ...data,
     }),
   });

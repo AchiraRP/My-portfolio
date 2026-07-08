@@ -46,12 +46,18 @@ export function ContactSection() {
     '> waiting_for_input...'
   ]);
 
+  const sanitizeInput = (input: string) => {
+    // Strip non-printable ASCII control characters
+    return input.replace(/[\x00-\x1F\x7F-\x9F]/g, '');
+  };
+
   const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    const cleanValue = sanitizeInput(value);
+    setFormData(prev => ({ ...prev, [field]: cleanValue }));
 
     // Add terminal-style feedback
     setTerminalOutput(prev => {
-      const newOutput = [...prev, `> ${field}_updated: "${value.substring(0, 20)}${value.length > 20 ? '...' : ''}"`];
+      const newOutput = [...prev, `> ${field}_updated: "${cleanValue.substring(0, 20)}${cleanValue.length > 20 ? '...' : ''}"`];
       if (newOutput.length > 10) newOutput.shift(); // Keep only last 10 lines
       return newOutput;
     });
@@ -135,6 +141,7 @@ export function ContactSection() {
                   onChange={(e) => handleInputChange('name', e.target.value)}
                   className="font-mono bg-black-light border-primary/30 focus:border-primary text-primary"
                   placeholder="Enter your name..."
+                  maxLength={100}
                   required
                 />
               </div>
@@ -149,6 +156,7 @@ export function ContactSection() {
                   onChange={(e) => handleInputChange('email', e.target.value)}
                   className="font-mono bg-black-light border-primary/30 focus:border-primary text-primary"
                   placeholder="your.email@domain.com"
+                  maxLength={200}
                   required
                 />
               </div>
@@ -162,6 +170,7 @@ export function ContactSection() {
                   onChange={(e) => handleInputChange('message', e.target.value)}
                   className="font-mono bg-black-light border-primary/30 focus:border-primary text-primary min-h-[120px]"
                   placeholder="Hello! I'd like to discuss..."
+                  maxLength={1000}
                   required
                 />
               </div>
