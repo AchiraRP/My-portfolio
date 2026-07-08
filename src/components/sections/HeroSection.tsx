@@ -14,20 +14,12 @@ export function HeroSection({ onSectionChange }: HeroSectionProps) {
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout>;
 
-    const handleStartTour = () => {
-      timer = setTimeout(() => setShowTour(true), 600);
-    };
-
-    window.addEventListener('start-terminal-tour', handleStartTour);
-
-    const hasSeenThemeTour = localStorage.getItem('theme-tour-seen');
     const hasSeenTerminalTour = localStorage.getItem('terminal-tour-seen');
-    if (hasSeenThemeTour && !hasSeenTerminalTour) {
-      handleStartTour();
+    if (!hasSeenTerminalTour) {
+      timer = setTimeout(() => setShowTour(true), 600);
     }
 
     return () => {
-      window.removeEventListener('start-terminal-tour', handleStartTour);
       if (timer) clearTimeout(timer);
     };
   }, []);

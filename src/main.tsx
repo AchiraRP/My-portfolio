@@ -32,7 +32,7 @@
     );
   } else {
     createRoot(document.getElementById("root")!).render(
-      <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false} themes={['light', 'dark', 'monochrome']}>
+      <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
         <App />
       </ThemeProvider>
     );
