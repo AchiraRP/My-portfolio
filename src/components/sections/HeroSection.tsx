@@ -40,21 +40,28 @@ export function HeroSection({ onSectionChange }: HeroSectionProps) {
   useEffect(() => {
     if (showTour) {
       const handleInteraction = () => dismissTour();
-      const handleScroll = () => {
-        if (scrollIndicatorRef.current) {
-          const rect = scrollIndicatorRef.current.getBoundingClientRect();
-          // Dismiss when scroll_down() reaches near the top of the screen
-          if (rect.top <= 150) {
-            dismissTour();
-          }
-        }
-      };
-
       window.addEventListener('click', handleInteraction);
-      window.addEventListener('scroll', handleScroll, { passive: true });
+
+      let observer: IntersectionObserver | null = null;
+      if (scrollIndicatorRef.current) {
+        // Trigger when the element leaves the root area (top <= 150px)
+        observer = new IntersectionObserver(
+          ([entry]) => {
+            // If the element crosses above the top margin, it stops intersecting
+            if (!entry.isIntersecting && entry.boundingClientRect.top < 150) {
+              dismissTour();
+            }
+          },
+          { rootMargin: '-150px 0px 0px 0px', threshold: 0 }
+        );
+        observer.observe(scrollIndicatorRef.current);
+      }
+
       return () => {
         window.removeEventListener('click', handleInteraction);
-        window.removeEventListener('scroll', handleScroll);
+        if (observer) {
+          observer.disconnect();
+        }
       };
     }
   }, [showTour]);

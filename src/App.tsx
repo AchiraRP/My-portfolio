@@ -1,11 +1,12 @@
-import { useMemo, useCallback } from 'react';
+import { useMemo, useCallback, lazy, Suspense } from 'react';
 import { Header } from './components/sections/Header';
 import { HeroSection } from './components/sections/HeroSection';
-import { PortfolioGrid } from './components/sections/PortfolioGrid';
-import { ContactSection } from './components/sections/ContactSection';
-import { AboutSection } from './components/sections/AboutSection';
-import { ProofSection } from './components/sections/ProofSection';
-import { BlogsSection } from './components/sections/BlogsSection';
+
+const PortfolioGrid = lazy(() => import('./components/sections/PortfolioGrid').then(m => ({ default: m.PortfolioGrid })));
+const ContactSection = lazy(() => import('./components/sections/ContactSection').then(m => ({ default: m.ContactSection })));
+const AboutSection = lazy(() => import('./components/sections/AboutSection').then(m => ({ default: m.AboutSection })));
+const ProofSection = lazy(() => import('./components/sections/ProofSection').then(m => ({ default: m.ProofSection })));
+const BlogsSection = lazy(() => import('./components/sections/BlogsSection').then(m => ({ default: m.BlogsSection })));
 
 import { portfolioData } from './constants/portfolio';
 import { sectionIds } from './constants';
@@ -45,33 +46,35 @@ export default function App() {
 
         <div className="border-t border-primary/10" />
 
-        <section id="about" className="pt-20">
-          <AboutSection />
-        </section>
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center font-mono text-primary animate-pulse">Loading system modules...</div>}>
+          <section id="about" className="pt-20">
+            <AboutSection />
+          </section>
 
-        <div className="border-t border-primary/10" />
+          <div className="border-t border-primary/10" />
 
-        <section id="proof" className="pt-20">
-          <ProofSection />
-        </section>
+          <section id="proof" className="pt-20">
+            <ProofSection />
+          </section>
 
-        <div className="border-t border-primary/10" />
+          <div className="border-t border-primary/10" />
 
-        <section id="projects" className="pt-20">
-          <PortfolioGrid items={portfolioData.projects} type="projects" />
-        </section>
+          <section id="projects" className="pt-20">
+            <PortfolioGrid items={portfolioData.projects} type="projects" />
+          </section>
 
-        <div className="border-t border-primary/10" />
+          <div className="border-t border-primary/10" />
 
-        <section id="blogs" className="pt-20">
-          <BlogsSection />
-        </section>
+          <section id="blogs" className="pt-20">
+            <BlogsSection />
+          </section>
 
-        <div className="border-t border-primary/10" />
+          <div className="border-t border-primary/10" />
 
-        <section id="contact" className="pt-20">
-          <ContactSection />
-        </section>
+          <section id="contact" className="pt-20">
+            <ContactSection />
+          </section>
+        </Suspense>
       </main>
 
       <footer className="relative z-10 border-t border-primary/20 py-8 px-4">
