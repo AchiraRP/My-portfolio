@@ -40,7 +40,12 @@ export function HeroSection({ onSectionChange }: HeroSectionProps) {
   useEffect(() => {
     if (showTour) {
       const handleInteraction = () => dismissTour();
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') dismissTour();
+      };
+      
       window.addEventListener('click', handleInteraction);
+      window.addEventListener('keydown', handleKeyDown);
 
       let observer: IntersectionObserver | null = null;
       if (scrollIndicatorRef.current) {
@@ -59,6 +64,7 @@ export function HeroSection({ onSectionChange }: HeroSectionProps) {
 
       return () => {
         window.removeEventListener('click', handleInteraction);
+        window.removeEventListener('keydown', handleKeyDown);
         if (observer) {
           observer.disconnect();
         }

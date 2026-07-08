@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Card } from '../ui/card';
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
@@ -52,6 +52,21 @@ export function PortfolioGrid({ items, type }: PortfolioGridProps) {
       filter === 'All' || item.tags.includes(filter)
     );
   }, [realItems, filter]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setShowAllModal(false);
+        setSelectedItem(null);
+      }
+    };
+    if (showAllModal || selectedItem) {
+      document.addEventListener('keydown', handleKeyDown);
+    }
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [showAllModal, selectedItem]);
 
   return (
     <section className="py-20 px-4">
@@ -107,7 +122,7 @@ export function PortfolioGrid({ items, type }: PortfolioGridProps) {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
 
                   {/* Hover action buttons */}
-                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center gap-2 p-4 z-10 backdrop-blur-sm">
+                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center gap-2 p-4 z-10 backdrop-blur-sm">
                     <Button
                       size="sm"
                       className="bg-primary text-primary-foreground hover:bg-primary/90 w-36"
@@ -187,11 +202,17 @@ export function PortfolioGrid({ items, type }: PortfolioGridProps) {
         {/* Modal: All Projects */}
         {showAllModal && (
           <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setShowAllModal(false)}>
-            <div className="cyber-border bg-black-light rounded-lg max-w-6xl w-full max-h-[90vh] flex flex-col" onClick={e => e.stopPropagation()}>
+            <div 
+              role="dialog" 
+              aria-modal="true" 
+              aria-labelledby="modal-all-projects-title"
+              className="cyber-border bg-black-light rounded-lg max-w-6xl w-full max-h-[90vh] flex flex-col" 
+              onClick={e => e.stopPropagation()}
+            >
               <div className="p-4 border-b border-primary/20 flex justify-between items-center bg-black/50 rounded-t-lg shrink-0">
                 <div className="flex items-center gap-2">
                   <Terminal className="w-5 h-5 text-primary" />
-                  <h3 className="font-mono text-primary text-lg">ALL_PROJECTS.LOG</h3>
+                  <h3 id="modal-all-projects-title" className="font-mono text-primary text-lg">ALL_PROJECTS.LOG</h3>
                 </div>
                 <Button variant="ghost" size="sm" onClick={() => setShowAllModal(false)} className="text-primary hover:bg-primary/10">
                   <X className="w-5 h-5" />
@@ -238,7 +259,7 @@ export function PortfolioGrid({ items, type }: PortfolioGridProps) {
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
 
                         {/* Hover action buttons */}
-                        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center gap-2 p-4 z-10 backdrop-blur-sm">
+                        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center gap-2 p-4 z-10 backdrop-blur-sm">
                           <Button
                             size="sm"
                             className="bg-primary text-primary-foreground hover:bg-primary/90 w-36"
@@ -321,10 +342,15 @@ export function PortfolioGrid({ items, type }: PortfolioGridProps) {
         {/* Modal for detailed view */}
         {selectedItem && (
           <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-            <div className="cyber-border bg-black-light rounded-lg max-w-4xl w-full max-h-[90vh] overflow-auto">
+            <div 
+              role="dialog" 
+              aria-modal="true" 
+              aria-labelledby="modal-detail-title"
+              className="cyber-border bg-black-light rounded-lg max-w-4xl w-full max-h-[90vh] overflow-auto"
+            >
               <div className="p-6">
                 <div className="flex justify-between items-start mb-4">
-                  <h3 className="font-mono text-primary text-xl">{selectedItem.title}</h3>
+                  <h3 id="modal-detail-title" className="font-mono text-primary text-xl">{selectedItem.title}</h3>
                   <Button
                     variant="ghost"
                     size="sm"

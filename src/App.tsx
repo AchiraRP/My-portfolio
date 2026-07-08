@@ -19,7 +19,8 @@ export default function App() {
   const handleSectionChange = useCallback((id: string) => {
     const el = document.getElementById(id);
     if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      el.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', block: 'start' });
     }
   }, []);
 
@@ -30,7 +31,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-background text-foreground relative overflow-x-hidden">
       {/* Matrix-style background effect */}
-      <div className="fixed inset-0 pointer-events-none opacity-5 overflow-hidden select-none z-0">
+      <div aria-hidden="true" className="fixed inset-0 pointer-events-none opacity-5 overflow-hidden select-none z-0">
         <div className="text-primary font-mono text-xs leading-relaxed break-all h-full w-full">
           {matrixBackground}
         </div>

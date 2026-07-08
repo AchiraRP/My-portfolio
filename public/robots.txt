@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://achirarp.github.io/sitemap.xml
