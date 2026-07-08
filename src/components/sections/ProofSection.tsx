@@ -4,7 +4,7 @@ import { Card } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 
-import { certs, allCerts, platformBadges, allBadges } from '../../constants/portfolio';
+import { certs, allCerts, platformBadges, allBadges, CertItem, BadgeItem } from '../../constants/portfolio';
 
 export function ProofSection() {
   const [showAllCerts, setShowAllCerts] = useState(false);

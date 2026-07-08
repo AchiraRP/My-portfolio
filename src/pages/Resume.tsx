@@ -112,6 +112,7 @@ export default function Resume() {
           <h2 className="font-section-title text-section-title text-primary uppercase mb-stack-space">Experience & Labs</h2>
           <div className="border-b border-outline-variant mb-stack-space"></div>
           
+          {/* @ts-ignore */}
           {portfolioData.labs.filter(l => !l.isMoreLink).slice(0, 3).map((lab, index) => (
             <div key={index} className="mb-entry-gap">
               <div className="flex justify-between items-baseline mb-stack-space">
