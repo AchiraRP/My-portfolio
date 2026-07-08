@@ -47,35 +47,43 @@ export default function App() {
 
         <div className="border-t border-primary/10" />
 
-        <Suspense fallback={<div className="min-h-screen flex items-center justify-center font-mono text-primary animate-pulse">Loading system modules...</div>}>
-          <section id="about" className="pt-20">
+        <section id="about" className="pt-20">
+          <Suspense fallback={<div className="min-h-screen flex items-center justify-center font-mono text-primary animate-pulse">Loading about...</div>}>
             <AboutSection />
-          </section>
+          </Suspense>
+        </section>
 
-          <div className="border-t border-primary/10" />
+        <div className="border-t border-primary/10" />
 
-          <section id="proof" className="pt-20">
+        <section id="proof" className="pt-20">
+          <Suspense fallback={<div className="min-h-screen flex items-center justify-center font-mono text-primary animate-pulse">Loading proof...</div>}>
             <ProofSection />
-          </section>
+          </Suspense>
+        </section>
 
-          <div className="border-t border-primary/10" />
+        <div className="border-t border-primary/10" />
 
-          <section id="projects" className="pt-20">
+        <section id="projects" className="pt-20">
+          <Suspense fallback={<div className="min-h-screen flex items-center justify-center font-mono text-primary animate-pulse">Loading projects...</div>}>
             <PortfolioGrid items={portfolioData.projects} type="projects" />
-          </section>
+          </Suspense>
+        </section>
 
-          <div className="border-t border-primary/10" />
+        <div className="border-t border-primary/10" />
 
-          <section id="blogs" className="pt-20">
+        <section id="blogs" className="pt-20">
+          <Suspense fallback={<div className="min-h-screen flex items-center justify-center font-mono text-primary animate-pulse">Loading blogs...</div>}>
             <BlogsSection />
-          </section>
+          </Suspense>
+        </section>
 
-          <div className="border-t border-primary/10" />
+        <div className="border-t border-primary/10" />
 
-          <section id="contact" className="pt-20">
+        <section id="contact" className="pt-20">
+          <Suspense fallback={<div className="min-h-screen flex items-center justify-center font-mono text-primary animate-pulse">Loading contact...</div>}>
             <ContactSection />
-          </section>
-        </Suspense>
+          </Suspense>
+        </section>
       </main>
 
       <footer className="relative z-10 border-t border-primary/20 py-8 px-4">

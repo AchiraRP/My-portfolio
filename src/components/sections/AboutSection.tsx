@@ -17,10 +17,10 @@ export function AboutSection() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="flex flex-col gap-6">
           
           {/* LEFT SIDE - MAIN CONTENT */}
-          <div className="lg:col-span-2">
+          <div className="w-full">
             <div className="cyber-border bg-black-light/50 rounded-lg p-6 lg:p-8 h-full flex flex-col">
               {/* Window Controls */}
               <div className="flex items-center space-x-2 mb-8 pb-4 border-b border-primary/20">
@@ -132,134 +132,8 @@ export function AboutSection() {
               </div>
             </div>
           </div>
-          {/* RIGHT SIDEBAR - WIDGETS */}
-          <div className="space-y-6 flex flex-col">
-            
-            {/* Widget 1: QUICK INFO */}
-            <div className="cyber-border bg-black-light/30 border-primary/20 rounded-lg p-5">
-              <div className="flex justify-between items-center mb-5 pb-2 border-b border-primary/20">
-                <span className="font-mono text-primary text-sm flex items-center">
-                  <ChevronRight className="w-4 h-4 mr-2" /> QUICK INFO
-                </span>
-                <div className="w-2 h-2 border border-primary"></div>
-              </div>
-              <div className="space-y-4 font-mono text-sm">
-                <div className="flex items-start">
-                  <User className="w-4 h-4 text-primary mr-3 mt-1" />
-                  <div>
-                    <span className="text-primary">Name:</span> <span className="text-muted-foreground">Achira Pathiraja</span>
-                  </div>
-                </div>
-                <div className="flex items-start">
-                  <GraduationCap className="w-4 h-4 text-primary mr-3 mt-1" />
-                  <div>
-                    <span className="text-primary">Role:</span> <span className="text-muted-foreground">Cybersecurity Student</span>
-                  </div>
-                </div>
-                <div className="flex items-start">
-                  <Target className="w-4 h-4 text-primary mr-3 mt-1" />
-                  <div>
-                    <span className="text-primary">Goal:</span> <span className="text-muted-foreground">SOC Analyst</span>
-                  </div>
-                </div>
-                <div className="flex items-start">
-                  <MapPin className="w-4 h-4 text-primary mr-3 mt-1" />
-                  <div>
-                    <span className="text-primary">Location:</span> <span className="text-muted-foreground">Sri Lanka</span>
-                  </div>
-                </div>
-                <div className="flex items-start">
-                  <Clock className="w-4 h-4 text-primary mr-3 mt-1" />
-                  <div>
-                    <span className="text-primary">Status:</span> <span className="text-muted-foreground">Learning • Investigating • Building</span>
-                  </div>
-                </div>
-                <div className="flex items-start">
-                  <Network className="w-4 h-4 text-primary mr-3 mt-1" />
-                  <div>
-                    <span className="text-primary">Connection:</span> <span className="text-muted-foreground">ESTABLISHED (127.0.0.1)</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Widget 2: CURRENT FOCUS */}
-            <div className="cyber-border bg-black-light/30 border-primary/20 rounded-lg p-5">
-              <div className="flex justify-between items-center mb-5 pb-2 border-b border-primary/20">
-                <span className="font-mono text-primary text-sm flex items-center">
-                  <ChevronRight className="w-4 h-4 mr-2" /> CURRENT FOCUS
-                </span>
-              </div>
-              <ul className="space-y-3 font-mono text-sm text-muted-foreground">
-                <li className="flex items-center">
-                  <ChevronRight className="w-3 h-3 text-primary mr-2" /> SOC Operations
-                </li>
-                <li className="flex items-center">
-                  <ChevronRight className="w-3 h-3 text-primary mr-2" /> Threat Detection
-                </li>
-                <li className="flex items-center">
-                  <ChevronRight className="w-3 h-3 text-primary mr-2" /> Log Analysis
-                </li>
-                <li className="flex items-center">
-                  <ChevronRight className="w-3 h-3 text-primary mr-2" /> Digital Forensics
-                </li>
-                <li className="flex items-center">
-                  <ChevronRight className="w-3 h-3 text-primary mr-2" /> AI & Machine Learning
-                </li>
-              </ul>
-            </div>
-
-            {/* Widget 3: TRAINING STATUS */}
-            <div className="cyber-border bg-black-light/30 border-primary/20 rounded-lg p-5">
-              <div className="flex justify-between items-center mb-5 pb-2 border-b border-primary/20">
-                <span className="font-mono text-primary text-sm flex items-center">
-                  <ChevronRight className="w-4 h-4 mr-2" /> TRAINING_STATUS.LOG
-                </span>
-              </div>
-              <div className="space-y-2 font-mono text-sm flex flex-col text-muted-foreground">
-                <div className="flex justify-between">
-                  <span>TryHackMe</span> <span className="text-primary">ACTIVE</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>BTLO</span> <span className="text-primary">ACTIVE</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Python</span> <span className="text-primary">ACTIVE</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Machine Learning</span> <span className="text-primary">ACTIVE</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>SOC Learning</span> <span className="text-primary">ACTIVE</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Widget 4: SYSTEM STATUS */}
-            <div className="cyber-border bg-black-light/30 border-primary/20 rounded-lg p-5">
-              <div className="flex justify-between items-center mb-5 pb-2 border-b border-primary/20">
-                <span className="font-mono text-primary text-sm flex items-center">
-                  <ChevronRight className="w-4 h-4 mr-2" /> SYSTEM STATUS
-                </span>
-              </div>
-              <div className="space-y-2 font-mono text-sm flex flex-col text-muted-foreground">
-                <div className="flex justify-between">
-                  <span>Analyst Profile</span> <span className="text-primary">LOADED</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Background Check</span> <span className="text-primary">CLEAN</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Threat Level</span> <span className="text-primary">LOW</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Access Status</span> <span className="text-primary">AUTHORIZED</span>
-                </div>
-              </div>
-            </div>
-            
-          </div>
         </div>
+
 
         {/* BOTTOM SECTION */}
         <div className="mt-6 cyber-border bg-black-light/30 border-primary/20 rounded-lg p-5">

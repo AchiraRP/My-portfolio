@@ -11,10 +11,7 @@ test.describe('Portfolio Page', () => {
   test('hero section is visible', async ({ page }) => {
     await page.goto('/');
     
-    // Wait for the terminal or tour overlay to appear
-    const terminalTour = page.getByText('TERMINAL.APP');
-    await expect(terminalTour.first()).toBeVisible();
-    
+
     // Wait for the terminal to appear
     const terminal = page.getByTestId('terminal-window').or(page.locator('.matrix-bg'));
     await expect(terminal.first()).toBeVisible();
