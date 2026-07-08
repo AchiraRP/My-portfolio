@@ -417,7 +417,8 @@ export const allCerts: CertItem[] = [
     date: '2025',
     status: 'IN PROGRESS',
     credentialUrl: 'https://blueteamlabs.online/',
-    image: 'https://blueteamlabs.online/img/btlo-logo.png',
+    // using a generated placeholder image since the original BTLO link is dead
+    image: '/btlo-logo.png',
     tags: ['Incident Response', 'Forensics'],
   },
   {
@@ -475,7 +476,8 @@ export const platformBadges: BadgeItem[] = [
     status: 'EARNED',
     icon: '📧',
     credentialUrl: 'https://blueteamlabs.online/',
-    image: 'https://blueteamlabs.online/img/btlo-logo.png',
+    // using a generated placeholder image since the original BTLO link is dead
+    image: '/btlo-logo.png',
   },
   {
     platform: 'BTLO',
@@ -484,7 +486,8 @@ export const platformBadges: BadgeItem[] = [
     status: 'EARNED',
     icon: '📋',
     credentialUrl: 'https://blueteamlabs.online/',
-    image: 'https://blueteamlabs.online/img/btlo-logo.png',
+    // using a generated placeholder image since the original BTLO link is dead
+    image: '/btlo-logo.png',
   },
   // --- VIEW ALL BADGES LINK ---
   {
@@ -515,6 +518,7 @@ export const allBadges: BadgeItem[] = [
     status: 'IN PROGRESS',
     icon: '🚨',
     credentialUrl: 'https://blueteamlabs.online/',
-    image: 'https://blueteamlabs.online/img/btlo-logo.png',
+    // using a generated placeholder image since the original BTLO link is dead
+    image: '/btlo-logo.png',
   },
 ];

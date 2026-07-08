@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import { Card } from '../ui/card';
@@ -6,7 +6,9 @@ import { BookOpen, FileText, ExternalLink, Clock, Tag, ChevronRight, Search } fr
 
 type PostType = 'blog' | 'writeup' | 'documentation';
 
-import { posts } from '../../constants/portfolio';
+import { posts as staticPosts } from '../../constants/portfolio';
+import { getPosts } from '../../services/sanityService';
+import type { Post } from '../../constants/portfolio';
 
 const typeConfig: Record<PostType, { label: string; icon: typeof BookOpen; color: string }> = {
   blog: { label: 'BLOG', icon: BookOpen, color: 'text-primary border-primary/40' },
@@ -20,6 +22,15 @@ export function BlogsSection() {
   const [activeFilter, setActiveFilter] = useState<'all' | PostType>('all');
   const [search, setSearch] = useState('');
   const [showAllModal, setShowAllModal] = useState(false);
+  const [posts, setPosts] = useState<Post[]>(staticPosts);
+
+  useEffect(() => {
+    getPosts()
+      .then(data => {
+        if (data && data.length > 0) setPosts(data);
+      })
+      .catch(err => console.error("Failed to load posts from Sanity:", err));
+  }, []);
 
   const realPosts = posts.filter(p => !p.isMoreLink);
   const displayPosts = realPosts.slice(0, 5);

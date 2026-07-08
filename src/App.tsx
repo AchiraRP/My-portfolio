@@ -1,4 +1,4 @@
-import { useMemo, useCallback, lazy, Suspense } from 'react';
+import { useMemo, useCallback, lazy, Suspense, useState, useEffect } from 'react';
 import { Header } from './components/sections/Header';
 import { HeroSection } from './components/sections/HeroSection';
 
@@ -11,9 +11,20 @@ const BlogsSection = lazy(() => import('./components/sections/BlogsSection').the
 import { portfolioData } from './constants/portfolio';
 import { sectionIds } from './constants';
 import { useActiveSection } from './hooks/useActiveSection';
+import { getProjects } from './services/sanityService';
+import type { PortfolioItem } from './types';
 
 export default function App() {
   const activeSection = useActiveSection(sectionIds);
+  const [projects, setProjects] = useState<PortfolioItem[]>(portfolioData.projects);
+
+  useEffect(() => {
+    getProjects()
+      .then(data => {
+        if (data && data.length > 0) setProjects(data);
+      })
+      .catch(err => console.error("Failed to load projects from Sanity:", err));
+  }, []);
 
   // Smooth-scroll to section when nav link clicked
   const handleSectionChange = useCallback((id: string) => {
@@ -65,7 +76,7 @@ export default function App() {
 
         <section id="projects" className="pt-20">
           <Suspense fallback={<div className="min-h-screen flex items-center justify-center font-mono text-primary animate-pulse">Loading projects...</div>}>
-            <PortfolioGrid items={portfolioData.projects} type="projects" />
+            <PortfolioGrid items={projects} type="projects" />
           </Suspense>
         </section>
 

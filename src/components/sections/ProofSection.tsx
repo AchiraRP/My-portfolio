@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Award, BadgeCheck, ExternalLink, ChevronRight, Shield, Maximize2, X } from 'lucide-react';
 import { Card } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 
-import { certs, allCerts, platformBadges, allBadges, CertItem, BadgeItem } from '../../constants/portfolio';
+import { certs as staticCerts, platformBadges as staticBadges, CertItem, BadgeItem } from '../../constants/portfolio';
+import { getCertifications, getBadges } from '../../services/sanityService';
 
 const certCategories = ['All', 'Cybersecurity', 'AI', 'Networking', 'Programming', 'Incident Response'];
 const badgeCategories = ['All', 'TryHackMe', 'BTLO', 'Internal'];
@@ -123,10 +124,47 @@ const BadgeCard = ({ badge }: { badge: BadgeItem }) => (
 );
 
 export function ProofSection() {
-  const [showAllCerts, setShowAllCerts] = useState(false);
-  const [showAllBadges, setShowAllBadges] = useState(false);
   const [certFilter, setCertFilter] = useState('All');
   const [badgeFilter, setBadgeFilter] = useState('All');
+  const [showAllCerts, setShowAllCerts] = useState(false);
+  const [showAllBadges, setShowAllBadges] = useState(false);
+
+  const [certs, setCerts] = useState<CertItem[]>(staticCerts);
+  const [platformBadges, setPlatformBadges] = useState<BadgeItem[]>(staticBadges);
+  const [allCerts, setAllCerts] = useState<CertItem[]>(staticCerts);
+  const [allBadges, setAllBadges] = useState<BadgeItem[]>(staticBadges);
+
+  useEffect(() => {
+    getCertifications().then(data => {
+      if (data && data.length > 0) {
+        setAllCerts(data);
+        const real = data.filter(c => !c.isMoreLink);
+        const moreLink = data.find(c => c.isMoreLink);
+        const display = real.slice(0, 5);
+        if (moreLink) display.push(moreLink);
+        setCerts(display);
+      }
+    }).catch(console.error);
+
+    getBadges().then(data => {
+      if (data && data.length > 0) {
+        setAllBadges(data);
+        const real = data.filter(b => !b.isMoreLink);
+        const moreLink = data.find(b => b.isMoreLink);
+        const display = real.slice(0, 5);
+        if (moreLink) display.push(moreLink);
+        setPlatformBadges(display);
+      }
+    }).catch(console.error);
+  }, []);
+
+  const filteredModalCerts = allCerts.filter(c => !c.isMoreLink).filter(cert =>
+    certFilter === 'All' || cert.tags.includes(certFilter)
+  );
+
+  const filteredModalBadges = allBadges.filter(b => !b.isMoreLink).filter(badge =>
+    badgeFilter === 'All' || badge.platform === badgeFilter
+  );
 
   return (
     <section className="py-20 px-4">
