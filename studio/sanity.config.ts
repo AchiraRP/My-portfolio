@@ -10,7 +10,26 @@ export default defineConfig({
   projectId: process.env.SANITY_STUDIO_PROJECT_ID || 'hy55n3fs',
   dataset: process.env.SANITY_STUDIO_DATASET || 'production',
 
-  plugins: [structureTool(), visionTool()],
+  plugins: [
+    structureTool({
+      structure: (S) =>
+        S.list()
+          .title('Content')
+          .items([
+            // Singleton for Resume
+            S.listItem()
+              .title('Resume settings')
+              .id('resume')
+              .child(S.document().schemaType('resume').documentId('resume')),
+            // Regular document types
+            S.divider(),
+            ...S.documentTypeListItems().filter(
+              (listItem) => !['resume'].includes(listItem.getId() as string)
+            ),
+          ]),
+    }),
+    visionTool(),
+  ],
 
   schema: {
     types: schemaTypes,

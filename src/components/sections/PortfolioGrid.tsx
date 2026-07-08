@@ -38,20 +38,21 @@ export function PortfolioGrid({ items, type }: PortfolioGridProps) {
   const [showAllModal, setShowAllModal] = useState(false);
   const [filter, setFilter] = useState('All');
 
-  const { realItems, moreLinkItem, displayItems, allTags } = useMemo(() => {
-    const real = items.filter(i => !i.isMoreLink);
-    const more = items.find(i => i.isMoreLink);
+  const { displayItems, allTags } = useMemo(() => {
+    const real = items;
     const display = real.slice(0, 5);
-    if (more) display.push(more);
-    const tags = ['All', ...Array.from(new Set(real.flatMap(i => i.tags)))];
-    return { realItems: real, moreLinkItem: more, displayItems: display, allTags: tags };
+    if (real.length > 5) {
+      display.push({ id: 'more-btn', isMoreLink: true, title: 'View All', description: 'See all items' } as any);
+    }
+    const tags = ['All', ...Array.from(new Set(real.flatMap(i => i.tags || [])))];
+    return { displayItems: display, allTags: tags };
   }, [items]);
 
   const filteredModalItems = useMemo(() => {
-    return realItems.filter(item => 
-      filter === 'All' || item.tags.includes(filter)
+    return items.filter(item => 
+      filter === 'All' || (item.tags || []).includes(filter)
     );
-  }, [realItems, filter]);
+  }, [items, filter]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -164,7 +165,7 @@ export function PortfolioGrid({ items, type }: PortfolioGridProps) {
                   <p className="text-muted-foreground text-sm mb-3 font-mono flex-1">{item.description}</p>
 
                   <div className="flex flex-wrap gap-1 mb-3">
-                    {item.tags.map((tag) => (
+                    {(item.tags || []).map((tag) => (
                       <Badge
                         key={tag}
                         variant="outline"
@@ -301,7 +302,7 @@ export function PortfolioGrid({ items, type }: PortfolioGridProps) {
                         <p className="text-muted-foreground text-xs mb-3 font-mono flex-1 line-clamp-2">{item.description}</p>
 
                         <div className="flex flex-wrap gap-1 mb-3">
-                          {item.tags.map((tag) => (
+                          {(item.tags || []).map((tag) => (
                             <Badge
                               key={tag}
                               variant="outline"
@@ -370,7 +371,7 @@ export function PortfolioGrid({ items, type }: PortfolioGridProps) {
                 <p className="font-mono text-muted-foreground mb-4">{selectedItem.description}</p>
 
                 <div className="flex flex-wrap gap-2">
-                  {selectedItem.tags.map((tag) => (
+                  {(selectedItem.tags || []).map((tag) => (
                     <Badge
                       key={tag}
                       variant="outline"

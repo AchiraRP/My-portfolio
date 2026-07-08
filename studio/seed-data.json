@@ -1,0 +1,70 @@
+{
+  "_id": "resume",
+  "_type": "resume",
+  "name": "Jane Doe",
+  "jobTitle": "Senior Cybersecurity Analyst",
+  "email": "jane.doe@example.com",
+  "phone": "+1 (555) 123-4567",
+  "linkedin": "https://linkedin.com/in/janedoe",
+  "github": "https://github.com/janedoe",
+  "summary": "Dedicated cybersecurity professional with over 5 years of experience in SOC operations, incident response, and threat detection. Proven ability to identify vulnerabilities and implement effective security measures to protect critical infrastructure.",
+  "skills": [
+    {
+      "_key": "sk1",
+      "category": "Core Competencies",
+      "items": "Threat Intelligence, Incident Response, Risk Management, SIEM"
+    },
+    {
+      "_key": "sk2",
+      "category": "Tools",
+      "items": "Splunk, Wireshark, Metasploit, Nmap, CrowdStrike"
+    }
+  ],
+  "experience": [
+    {
+      "_key": "exp1",
+      "role": "Cybersecurity Analyst",
+      "company": "TechGuard Solutions",
+      "dateRange": "Jan 2021 - Present",
+      "tools": "Splunk, CrowdStrike",
+      "description": [
+        "Monitored network traffic and analyzed security alerts using SIEM tools.",
+        "Led incident response efforts for 5+ major security breaches, reducing containment time by 30%.",
+        "Developed and maintained threat intelligence feeds to proactively identify emerging threats."
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "_key": "proj1",
+      "_type": "reference",
+      "_ref": "project-demo-1"
+    },
+    {
+      "_key": "proj2",
+      "_type": "reference",
+      "_ref": "82774c21-3d0b-4971-9281-adc4070e16a2"
+    }
+  ],
+  "certifications": [
+    {
+      "_key": "cert1",
+      "_type": "reference",
+      "_ref": "cert-demo-1"
+    },
+    {
+      "_key": "cert2",
+      "_type": "reference",
+      "_ref": "demo-bulk-cert-0"
+    }
+  ],
+  "education": [
+    {
+      "_key": "edu1",
+      "degree": "B.S. in Computer Science",
+      "school": "University of Technology",
+      "graduation": "May 2020",
+      "cgpa": "3.8"
+    }
+  ]
+}

@@ -18,7 +18,7 @@ const CertCard = ({ cert }: { cert: CertItem }) => (
     <div className="flex items-center justify-between mb-3 z-0 relative">
       <span
         className={`font-mono text-[10px] px-2 py-0.5 rounded border ${
-          cert.status === 'COMPLETED'
+          cert.status?.toUpperCase() === 'COMPLETED'
             ? 'border-primary/50 text-primary'
             : 'border-yellow-400/50 text-yellow-400'
         }`}
@@ -33,7 +33,7 @@ const CertCard = ({ cert }: { cert: CertItem }) => (
     </div>
 
     <div className="flex items-start gap-2 flex-1 z-0 relative">
-      <BadgeCheck className={`w-4 h-4 mt-0.5 shrink-0 ${cert.status === 'COMPLETED' ? 'text-primary' : 'text-yellow-400'}`} />
+      <BadgeCheck className={`w-4 h-4 mt-0.5 shrink-0 ${cert.status?.toUpperCase() === 'COMPLETED' ? 'text-primary' : 'text-yellow-400'}`} />
       <div>
         <p className="font-mono text-primary text-sm font-semibold leading-snug mb-1">{cert.title}</p>
         <p className="font-mono text-muted-foreground text-xs">{cert.issuer} · {cert.date}</p>
@@ -85,7 +85,7 @@ const BadgeCard = ({ badge }: { badge: BadgeItem }) => (
           <span className="font-mono text-[10px] text-muted-foreground">{badge.platform}</span>
           <span
             className={`font-mono text-[10px] px-1.5 py-0.5 rounded border ${
-              badge.status === 'EARNED'
+              badge.status?.toUpperCase() === 'EARNED'
                 ? 'border-primary/50 text-primary'
                 : 'border-yellow-400/50 text-yellow-400'
             }`}
@@ -98,7 +98,7 @@ const BadgeCard = ({ badge }: { badge: BadgeItem }) => (
       </div>
     </div>
     {/* Progress bar for in-progress badges */}
-    {badge.status === 'IN PROGRESS' && (
+    {badge.status?.toUpperCase() === 'IN PROGRESS' && (
       <div className="mt-3 h-1 rounded-full bg-primary/10 overflow-hidden z-0 relative">
         <div className="h-full w-[55%] bg-yellow-400/70 rounded-full" />
       </div>
@@ -138,10 +138,10 @@ export function ProofSection() {
     getCertifications().then(data => {
       if (data && data.length > 0) {
         setAllCerts(data);
-        const real = data.filter(c => !c.isMoreLink);
-        const moreLink = data.find(c => c.isMoreLink);
-        const display = real.slice(0, 5);
-        if (moreLink) display.push(moreLink);
+        const display = [...data].slice(0, 5);
+        if (data.length > 5) {
+          display.push({ isMoreLink: true, title: 'View All Certs' } as any);
+        }
         setCerts(display);
       }
     }).catch(console.error);
@@ -149,10 +149,10 @@ export function ProofSection() {
     getBadges().then(data => {
       if (data && data.length > 0) {
         setAllBadges(data);
-        const real = data.filter(b => !b.isMoreLink);
-        const moreLink = data.find(b => b.isMoreLink);
-        const display = real.slice(0, 5);
-        if (moreLink) display.push(moreLink);
+        const display = [...data].slice(0, 5);
+        if (data.length > 5) {
+          display.push({ isMoreLink: true, name: 'View All Badges' } as any);
+        }
         setPlatformBadges(display);
       }
     }).catch(console.error);

@@ -32,17 +32,17 @@ export function BlogsSection() {
       .catch(err => console.error("Failed to load posts from Sanity:", err));
   }, []);
 
-  const realPosts = posts.filter(p => !p.isMoreLink);
-  const displayPosts = realPosts.slice(0, 5);
-  const moreLinkItem = posts.find(p => p.isMoreLink);
-  if (moreLinkItem) displayPosts.push(moreLinkItem);
+  const displayPosts = [...posts].slice(0, 5);
+  if (posts.length > 5) {
+    displayPosts.push({ id: 'more-btn', isMoreLink: true, title: 'View All', summary: 'See all posts' } as any);
+  }
 
-  const filteredModalPosts = realPosts.filter((p) => {
+  const filteredModalPosts = posts.filter((p) => {
     const matchFilter = activeFilter === 'all' || p.type === activeFilter;
     const matchSearch =
       search === '' ||
       p.title.toLowerCase().includes(search.toLowerCase()) ||
-      p.tags.some((t) => t.toLowerCase().includes(search.toLowerCase()));
+      (p.tags || []).some((t) => t.toLowerCase().includes(search.toLowerCase()));
     return matchFilter && matchSearch;
   });
 
@@ -82,7 +82,7 @@ export function BlogsSection() {
                 </button>
               );
             }
-            const cfg = typeConfig[post.type];
+            const cfg = typeConfig[post.type as PostType] || typeConfig['blog'];
             const Icon = cfg.icon;
             return (
               <Card
@@ -194,7 +194,7 @@ export function BlogsSection() {
                     </div>
                   )}
                   {filteredModalPosts.map((post, idx) => {
-                    const cfg = typeConfig[post.type];
+                    const cfg = typeConfig[post.type as PostType] || typeConfig['blog'];
                     const Icon = cfg.icon;
                     return (
                       <Card

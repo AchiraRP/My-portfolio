@@ -1,8 +1,9 @@
 
   import React from 'react';
   import { createRoot } from "react-dom/client";
+  import { BrowserRouter, Routes, Route } from "react-router-dom";
   import App from "./App.tsx";
-  import Resume from "./pages/Resume.tsx";
+  import ResumePreview from "./pages/ResumePreview.tsx";
   import "./styles/index.css";
   import { ThemeProvider } from "next-themes";
 
@@ -22,18 +23,15 @@
     }
   }
 
-  const path = window.location.pathname;
-
-  if (path.startsWith('/resume')) {
-    createRoot(document.getElementById("root")!).render(
-      <ErrorBoundary>
-        <Resume />
-      </ErrorBoundary>
-    );
-  } else {
-    createRoot(document.getElementById("root")!).render(
+  createRoot(document.getElementById("root")!).render(
+    <ErrorBoundary>
       <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-        <App />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/resume" element={<ResumePreview />} />
+            <Route path="/*" element={<App />} />
+          </Routes>
+        </BrowserRouter>
       </ThemeProvider>
-    );
-  }
+    </ErrorBoundary>
+  );

@@ -57,5 +57,11 @@ export const badge = defineType({
       type: 'boolean',
       initialValue: false,
     }),
+    defineField({
+      name: 'phase',
+      title: 'Phase',
+      type: 'reference',
+      to: [{type: 'phase'}],
+    }),
   ],
 })

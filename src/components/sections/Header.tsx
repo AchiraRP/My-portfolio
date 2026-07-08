@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Button } from '../ui/button';
 import { Terminal, Menu, X, Sun, Moon } from 'lucide-react';
 import { useTheme } from 'next-themes';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 interface HeaderProps {
   activeSection: string;
@@ -11,6 +12,7 @@ interface HeaderProps {
 const sections = [
   { id: 'home', label: 'home.exe' },
   { id: 'about', label: 'about.sys' },
+  { id: 'roadmaps', label: 'roadmaps.exe' },
   { id: 'proof', label: 'proof.dat' },
   { id: 'projects', label: 'projects.log' },
   { id: 'blogs', label: 'blogs.md' },
@@ -21,10 +23,27 @@ export function Header({ activeSection, onSectionChange }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  const handleNavClick = (section: { id: string, label: string }) => {
+    if (location.pathname !== '/') {
+      navigate(`/#${section.id}`);
+    } else {
+      onSectionChange(section.id);
+    }
+  };
+
+  const getIsActive = (sectionId: string) => {
+    if (location.pathname === '/') {
+      return activeSection === sectionId;
+    }
+    return location.pathname.startsWith(`/${sectionId}`);
+  };
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-black-deep/80 backdrop-blur-sm border-b border-primary/20">
@@ -45,10 +64,10 @@ export function Header({ activeSection, onSectionChange }: HeaderProps) {
                   key={section.id}
                   variant={activeSection === section.id ? "default" : "ghost"}
                   size="sm"
-                  onClick={() => onSectionChange(section.id)}
+                  onClick={() => handleNavClick(section)}
                   className={`
                     font-mono text-sm transition-all duration-200
-                    ${activeSection === section.id
+                    ${getIsActive(section.id)
                       ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20'
                       : 'text-primary hover:bg-primary/10 hover:text-primary'
                     }
@@ -103,12 +122,12 @@ export function Header({ activeSection, onSectionChange }: HeaderProps) {
                   variant={activeSection === section.id ? "default" : "ghost"}
                   size="sm"
                   onClick={() => {
-                    onSectionChange(section.id);
+                    handleNavClick(section);
                     setIsMenuOpen(false);
                   }}
                   className={`
                     w-full justify-start font-mono text-sm
-                    ${activeSection === section.id
+                    ${getIsActive(section.id)
                       ? 'bg-primary text-primary-foreground'
                       : 'text-primary hover:bg-primary/10'
                     }

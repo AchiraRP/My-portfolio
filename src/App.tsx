@@ -1,4 +1,5 @@
 import { useMemo, useCallback, lazy, Suspense, useState, useEffect } from 'react';
+import { Routes, Route } from 'react-router-dom';
 import { Header } from './components/sections/Header';
 import { HeroSection } from './components/sections/HeroSection';
 
@@ -7,6 +8,10 @@ const ContactSection = lazy(() => import('./components/sections/ContactSection')
 const AboutSection = lazy(() => import('./components/sections/AboutSection').then(m => ({ default: m.AboutSection })));
 const ProofSection = lazy(() => import('./components/sections/ProofSection').then(m => ({ default: m.ProofSection })));
 const BlogsSection = lazy(() => import('./components/sections/BlogsSection').then(m => ({ default: m.BlogsSection })));
+const Roadmaps = lazy(() => import('./pages/Roadmaps'));
+const RoadmapDetail = lazy(() => import('./pages/RoadmapDetail'));
+const PhaseDetail = lazy(() => import('./pages/PhaseDetail'));
+const ResumePreview = lazy(() => import('./pages/ResumePreview'));
 
 import { portfolioData } from './constants/portfolio';
 import { sectionIds } from './constants';
@@ -50,51 +55,74 @@ export default function App() {
 
       <Header activeSection={activeSection} onSectionChange={handleSectionChange} />
 
-      <main className="relative z-10">
-        {/* Each section has an id anchor and pt-20 to clear the fixed header */}
-        <section id="home">
-          <HeroSection onSectionChange={handleSectionChange} />
-        </section>
+      <main className="relative z-10 pt-20">
+        <Routes>
+          <Route path="/" element={
+            <>
+              <section id="home">
+                <HeroSection onSectionChange={handleSectionChange} />
+              </section>
 
-        <div className="border-t border-primary/10" />
+              <div className="border-t border-primary/10" />
 
-        <section id="about" className="pt-20">
-          <Suspense fallback={<div className="min-h-screen flex items-center justify-center font-mono text-primary animate-pulse">Loading about...</div>}>
-            <AboutSection />
-          </Suspense>
-        </section>
+              <section id="about" className="pt-20">
+                <Suspense fallback={<div className="min-h-screen flex items-center justify-center font-mono text-primary animate-pulse">Loading about...</div>}>
+                  <AboutSection />
+                </Suspense>
+              </section>
 
-        <div className="border-t border-primary/10" />
+              <div className="border-t border-primary/10" />
 
-        <section id="proof" className="pt-20">
-          <Suspense fallback={<div className="min-h-screen flex items-center justify-center font-mono text-primary animate-pulse">Loading proof...</div>}>
-            <ProofSection />
-          </Suspense>
-        </section>
+              <section id="roadmaps" className="pt-20">
+                <Suspense fallback={<div className="min-h-screen flex items-center justify-center font-mono text-primary animate-pulse">Loading roadmaps...</div>}>
+                  <Roadmaps />
+                </Suspense>
+              </section>
 
-        <div className="border-t border-primary/10" />
+              <div className="border-t border-primary/10" />
 
-        <section id="projects" className="pt-20">
-          <Suspense fallback={<div className="min-h-screen flex items-center justify-center font-mono text-primary animate-pulse">Loading projects...</div>}>
-            <PortfolioGrid items={projects} type="projects" />
-          </Suspense>
-        </section>
+              <section id="proof" className="pt-20">
+                <Suspense fallback={<div className="min-h-screen flex items-center justify-center font-mono text-primary animate-pulse">Loading proof...</div>}>
+                  <ProofSection />
+                </Suspense>
+              </section>
 
-        <div className="border-t border-primary/10" />
+              <div className="border-t border-primary/10" />
 
-        <section id="blogs" className="pt-20">
-          <Suspense fallback={<div className="min-h-screen flex items-center justify-center font-mono text-primary animate-pulse">Loading blogs...</div>}>
-            <BlogsSection />
-          </Suspense>
-        </section>
+              <section id="projects" className="pt-20">
+                <Suspense fallback={<div className="min-h-screen flex items-center justify-center font-mono text-primary animate-pulse">Loading projects...</div>}>
+                  <PortfolioGrid items={projects} type="projects" />
+                </Suspense>
+              </section>
 
-        <div className="border-t border-primary/10" />
+              <div className="border-t border-primary/10" />
 
-        <section id="contact" className="pt-20">
-          <Suspense fallback={<div className="min-h-screen flex items-center justify-center font-mono text-primary animate-pulse">Loading contact...</div>}>
-            <ContactSection />
-          </Suspense>
-        </section>
+              <section id="blogs" className="pt-20">
+                <Suspense fallback={<div className="min-h-screen flex items-center justify-center font-mono text-primary animate-pulse">Loading blogs...</div>}>
+                  <BlogsSection />
+                </Suspense>
+              </section>
+
+              <div className="border-t border-primary/10" />
+
+              <section id="contact" className="pt-20">
+                <Suspense fallback={<div className="min-h-screen flex items-center justify-center font-mono text-primary animate-pulse">Loading contact...</div>}>
+                  <ContactSection />
+                </Suspense>
+              </section>
+            </>
+          } />
+          <Route path="/roadmaps/:slug" element={
+            <Suspense fallback={<div className="min-h-screen flex items-center justify-center font-mono text-primary animate-pulse">Loading roadmap...</div>}>
+              <RoadmapDetail />
+            </Suspense>
+          } />
+          <Route path="/roadmaps/:slug/phase/:phaseSlug" element={
+            <Suspense fallback={<div className="min-h-screen flex items-center justify-center font-mono text-primary animate-pulse">Loading phase...</div>}>
+              <PhaseDetail />
+            </Suspense>
+          } />
+        </Routes>
       </main>
 
       <footer className="relative z-10 border-t border-primary/20 py-8 px-4">

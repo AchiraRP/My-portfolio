@@ -1,1 +1,1 @@
-export const sectionIds = ['home', 'about', 'proof', 'projects', 'blogs', 'contact'];
+export const sectionIds = ['home', 'about', 'roadmaps', 'proof', 'projects', 'blogs', 'contact'];

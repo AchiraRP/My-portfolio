@@ -1,8 +1,14 @@
-import { User, GraduationCap, Target, MapPin, Clock, Network, ChevronRight, Download } from 'lucide-react';
+import { User, GraduationCap, Target, MapPin, Clock, Network, ChevronRight, FileText } from 'lucide-react';
 import { Button } from '../ui/button';
-
+import { useNavigate } from 'react-router-dom';
 
 export function AboutSection() {
+  const navigate = useNavigate();
+
+  const handleOpenResume = () => {
+    window.open('/resume', '_blank');
+  };
+
   return (
     <section className="py-20 px-4">
       <div className="container mx-auto max-w-6xl">
@@ -38,10 +44,9 @@ export function AboutSection() {
                 <Button 
                   variant="outline"
                   className="shimmer-btn font-mono border-primary text-primary hover:bg-primary/10 w-full sm:w-auto"
-                  onClick={() => window.open('/resume', '_blank')}
+                  onClick={handleOpenResume}
                 >
-                  <Download className="w-4 h-4 mr-2" />
-                  Download Resume
+                  <FileText className="w-4 h-4 mr-2" /> View Resume
                 </Button>
               </div>
 
