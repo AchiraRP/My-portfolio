@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { Badge } from './ui/badge';
-import { Button } from './ui/button';
-import { Card } from './ui/card';
+import { Badge } from '../ui/badge';
+import { Button } from '../ui/button';
+import { Card } from '../ui/card';
 import { BookOpen, FileText, ExternalLink, Clock, Tag, ChevronRight, Search } from 'lucide-react';
 
 type PostType = 'blog' | 'writeup' | 'documentation';
 
-import { posts } from '../data/portfolio';
+import { posts } from '../../constants/portfolio';
 
 const typeConfig: Record<PostType, { label: string; icon: typeof BookOpen; color: string }> = {
   blog: { label: 'BLOG', icon: BookOpen, color: 'text-primary border-primary/40' },

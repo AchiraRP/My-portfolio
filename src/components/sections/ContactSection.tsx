@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { Button } from './ui/button';
-import { Input } from './ui/input';
-import { Textarea } from './ui/textarea';
-import { Card } from './ui/card';
+import { Button } from '../ui/button';
+import { Input } from '../ui/input';
+import { Textarea } from '../ui/textarea';
+import { Card } from '../ui/card';
 import { Mail, Github, Linkedin, Terminal, Send, MapPin, Download } from 'lucide-react';
+import { submitContactForm } from '../../api/contact';
 
 export function ContactSection() {
   const [formData, setFormData] = useState({
@@ -39,21 +40,13 @@ export function ContactSection() {
     ]);
 
     try {
-      const response = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({
-          access_key: "8829e2ae-87f9-4536-955f-5c8f0bd5daca",
-          name: formData.name,
-          email: formData.email,
-          message: formData.message,
-        }),
+      const result = await submitContactForm({
+        name: formData.name,
+        email: formData.email,
+        message: formData.message,
       });
 
-      const result = await response.json();
+
       
       if (result.success) {
         setTerminalOutput(prev => [
@@ -85,20 +78,20 @@ export function ContactSection() {
     {
       icon: <Mail className="w-5 h-5" />,
       label: 'email.sh',
-      value: 'YOUR_EMAIL',
-      href: 'mailto:YOUR_EMAIL'
+      value: import.meta.env.VITE_CONTACT_EMAIL || 'YOUR_EMAIL',
+      href: `mailto:${import.meta.env.VITE_CONTACT_EMAIL || 'YOUR_EMAIL'}`
     },
     {
       icon: <Github className="w-5 h-5" />,
       label: 'github.com',
-      value: 'YOUR_GITHUB',
-      href: 'https://github.com/YOUR_GITHUB'
+      value: import.meta.env.VITE_GITHUB_USERNAME || 'YOUR_GITHUB',
+      href: `https://github.com/${import.meta.env.VITE_GITHUB_USERNAME || 'YOUR_GITHUB'}`
     },
     {
       icon: <Linkedin className="w-5 h-5" />,
       label: 'linkedin.com',
-      value: 'YOUR_LINKEDIN',
-      href: 'https://linkedin.com/in/YOUR_LINKEDIN'
+      value: import.meta.env.VITE_LINKEDIN_USERNAME || 'YOUR_LINKEDIN',
+      href: `https://linkedin.com/in/${import.meta.env.VITE_LINKEDIN_USERNAME || 'YOUR_LINKEDIN'}`
     },
     {
       icon: <MapPin className="w-5 h-5" />,

@@ -1,38 +1,17 @@
-import { useEffect, useState } from 'react';
-import { Header } from './components/Header';
-import { HeroSection } from './components/HeroSection';
-import { PortfolioGrid } from './components/PortfolioGrid';
-import { ContactSection } from './components/ContactSection';
-import { AboutSection } from './components/AboutSection';
-import { ProofSection } from './components/ProofSection';
-import { BlogsSection } from './components/BlogsSection';
+import { Header } from './components/sections/Header';
+import { HeroSection } from './components/sections/HeroSection';
+import { PortfolioGrid } from './components/sections/PortfolioGrid';
+import { ContactSection } from './components/sections/ContactSection';
+import { AboutSection } from './components/sections/AboutSection';
+import { ProofSection } from './components/sections/ProofSection';
+import { BlogsSection } from './components/sections/BlogsSection';
 
-import { portfolioData } from './data/portfolio';
-
-const sectionIds = ['home', 'about', 'proof', 'projects', 'blogs', 'contact'];
+import { portfolioData } from './constants/portfolio';
+import { sectionIds } from './constants';
+import { useActiveSection } from './hooks/useActiveSection';
 
 export default function App() {
-  const [activeSection, setActiveSection] = useState('home');
-
-  // Track active section via IntersectionObserver as user scrolls
-  useEffect(() => {
-    const observers: IntersectionObserver[] = [];
-
-    sectionIds.forEach((id) => {
-      const el = document.getElementById(id);
-      if (!el) return;
-      const obs = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) setActiveSection(id);
-        },
-        { rootMargin: '-40% 0px -55% 0px' }
-      );
-      obs.observe(el);
-      observers.push(obs);
-    });
-
-    return () => observers.forEach((o) => o.disconnect());
-  }, []);
+  const activeSection = useActiveSection(sectionIds);
 
   // Smooth-scroll to section when nav link clicked
   const handleSectionChange = (id: string) => {

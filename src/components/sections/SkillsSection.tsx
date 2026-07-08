@@ -1,6 +1,6 @@
 import { ChevronRight, Shield, Brain, Code, Network, Terminal, Database } from 'lucide-react';
 
-import { skillGroups, certBadges } from '../data/portfolio';
+import { skillGroups, certBadges } from '../../constants/portfolio';
 
 export function SkillsSection() {
   return (

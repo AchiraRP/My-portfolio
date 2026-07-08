@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { Award, BadgeCheck, ExternalLink, ChevronRight, Shield, Maximize2, X } from 'lucide-react';
-import { Card } from './ui/card';
-import { Badge } from './ui/badge';
-import { Button } from './ui/button';
+import { Card } from '../ui/card';
+import { Badge } from '../ui/badge';
+import { Button } from '../ui/button';
 
-import { certs, allCerts, platformBadges, allBadges } from '../data/portfolio';
+import { certs, allCerts, platformBadges, allBadges } from '../../constants/portfolio';
 
 export function ProofSection() {
   const [showAllCerts, setShowAllCerts] = useState(false);

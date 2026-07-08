@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import { Button } from './ui/button';
+import { Button } from '../ui/button';
 import { ChevronDown, Code, Camera, Video, Terminal } from 'lucide-react';
 
 interface HeroSectionProps {
@@ -350,15 +350,15 @@ Learning Philosophy:
 
       case "contact":
         return `[SECURE HANDSHAKE]
-- Email: YOUR_EMAIL
+- Email: ${import.meta.env.VITE_CONTACT_EMAIL || 'YOUR_EMAIL'}
 - Location: Sri Lanka
 - Handshake status: ACTIVE. Please send a message below to establish connection.`;
 
       case "socials":
         return `[NETWORK CONNECTIONS]
-- GitHub: https://github.com/YOUR_USERNAME
-- LinkedIn: https://linkedin.com/in/YOUR_PROFILE
-- TryHackMe: https://tryhackme.com/p/YOUR_USERNAME`;
+- GitHub: https://github.com/${import.meta.env.VITE_GITHUB_USERNAME || 'YOUR_USERNAME'}
+- LinkedIn: https://linkedin.com/in/${import.meta.env.VITE_LINKEDIN_USERNAME || 'YOUR_PROFILE'}
+- TryHackMe: https://tryhackme.com/p/${import.meta.env.VITE_TRYHACKME_USERNAME || 'YOUR_USERNAME'}`;
 
       case "resume":
         return `[RESUME DATABASE]

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { portfolioData, skillGroups, allCerts } from './data/portfolio';
+import { portfolioData, skillGroups, allCerts } from '../constants/portfolio';
 
 const resumeStyles = `
   .ats-resume {

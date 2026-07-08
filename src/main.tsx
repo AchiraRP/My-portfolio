@@ -2,7 +2,7 @@
   import React from 'react';
   import { createRoot } from "react-dom/client";
   import App from "./App.tsx";
-  import Resume from "./Resume.tsx";
+  import Resume from "./pages/Resume.tsx";
   import "./styles/index.css";
   import { ThemeProvider } from "next-themes";
 

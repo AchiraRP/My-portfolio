@@ -1,24 +1,10 @@
 import { useState } from 'react';
-import { Card } from './ui/card';
-import { Button } from './ui/button';
-import { Badge } from './ui/badge';
-import { ImageWithFallback } from './ImageWithFallback';
+import { Card } from '../ui/card';
+import { Button } from '../ui/button';
+import { Badge } from '../ui/badge';
+import { ImageWithFallback } from '../shared/ImageWithFallback';
 import { ExternalLink, Github, Play, Eye, Maximize2, X, Terminal } from 'lucide-react';
-
-interface PortfolioItem {
-  id: string;
-  title: string;
-  description: string;
-  image: string;
-  tags: string[];
-  type: 'projects' | 'labs';
-  isMoreLink?: boolean;
-  links?: {
-    live?: string;
-    github?: string;
-    behance?: string;
-  };
-}
+import { PortfolioItem } from '../../types';
 
 interface PortfolioGridProps {
   items: PortfolioItem[];

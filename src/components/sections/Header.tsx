@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Button } from './ui/button';
+import { Button } from '../ui/button';
 import { Terminal, Menu, X, Monitor } from 'lucide-react';
 import { useTheme } from 'next-themes';
 

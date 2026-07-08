@@ -1,5 +1,6 @@
 import { User, GraduationCap, Target, MapPin, Clock, Network, ChevronRight, Download } from 'lucide-react';
-import { Button } from './ui/button';
+import { Button } from '../ui/button';
+import { personalInfo, coreSkills } from '../../constants/portfolio';
 
 export function AboutSection() {
   return (
